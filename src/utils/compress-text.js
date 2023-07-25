@@ -330,10 +330,8 @@ export class CompressText {
           // 公式：(rubyWidth + widen) / rtWidth = 0.6
           const widen = 0.6 * rt.width - rubyWidth;
           rtLeaf.scaleX = 0.6;
-          if (!this.needCompressTwice) {
-            firstChar.paddingLeft = widen / 2;
-            lastChar.paddingRight = widen / 2;
-          }
+          firstChar.paddingLeft = widen / 2;
+          lastChar.paddingRight = widen / 2;
           rt.width = rt.originalWidth + widen;
           rtLeaf.x = firstCharLeaf.x - firstPaddingLeft;
           this.needCompressTwice = true;
