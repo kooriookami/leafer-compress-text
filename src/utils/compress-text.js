@@ -15,7 +15,7 @@ export class CompressText {
 
     this.text = data.text || '';
     this.fontFamily = data.fontFamily || 'ygo-sc, 楷体, serif';
-    this.fontSize = data.fontSize || 12;
+    this.fontSize = data.fontSize || 24;
     this.lineHeight = data.lineHeight || this.baseLineHeight;
     this.letterSpacing = data.letterSpacing || 0;
     this.align = data.align || 'justify';
@@ -84,6 +84,7 @@ export class CompressText {
     this.compressRuby();
     this.alignRuby();
     this.compressRt();
+    this.createGradient();
     return this.group;
   }
 
@@ -344,6 +345,23 @@ export class CompressText {
         rt.width = rt.originalWidth;
         rtLeaf.x = firstCharLeaf.x + (rubyWidth - rt.width) / 2;
       }
+    }
+  }
+
+  // 创建渐变
+  createGradient() {
+    if (this.gradient) {
+      this.parseList.forEach(item => {
+        const ruby = item.ruby;
+        const charList = ruby.charList;
+        charList.forEach(char => {
+          const charLeaf = char.charLeaf;
+          charLeaf.fill = {
+            type: 'linear',
+            stops: [{ offset: 0, color: '#FF4B4B' }, { offset: 1, color: '#FEB027' }],
+          };
+        });
+      });
     }
   }
 }

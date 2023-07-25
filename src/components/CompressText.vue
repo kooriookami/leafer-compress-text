@@ -13,7 +13,7 @@
               <span>文本压缩 - Compress Text</span>
             </div>
             <div class="form-description">
-              <span>一个使用 LeaferJS 作为 Canvas 渲染引擎的文本压缩工具。</span>
+              <span>一个使用 LeaferJS 作为 Canvas 渲染引擎的文本压缩案例。</span>
             </div>
           </div>
 
@@ -46,7 +46,33 @@
               </el-form-item>
             </el-form>
             <el-form-item label="颜色">
-              <el-color-picker v-model="form.color" />
+              <el-switch v-model="form.gradient" active-text="渐变色" />
+              <div v-if="form.gradient" style="width: 100%; margin-top: 10px">
+                <el-row :gutter="gutter">
+                  <el-col :span="8">
+                    <el-space :size="10" wrap>
+                      <el-color-picker v-model="form.gradientColor1" @change="changeGradientColor" />
+                      <el-color-picker v-model="form.gradientColor2" @change="changeGradientColor" />
+                    </el-space>
+                  </el-col>
+                  <el-col :span="16">
+                    <el-form-item style="margin-bottom: 0" label="预设">
+                      <el-select
+                        v-model="form.gradientPreset"
+                        placeholder="请选择预设"
+                        clearable
+                        @change="changeGradientPreset"
+                      >
+                        <el-option v-for="item in gradientList" :label="item.label" :value="item.value" />
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+              </div>
+              <div v-else style="width: 100%;margin-top: 10px">
+                <el-color-picker v-model="form.color" />
+                <span class="tip">（自动选择清空）</span>
+              </div>
             </el-form-item>
             <el-form-item label="对齐">
               <el-radio-group v-model="form.align">
@@ -95,6 +121,7 @@
     name: 'CompressText',
     data() {
       return {
+        gutter: 10,
         fontLoading: false,
         leafer: null,
         compressText: null,
@@ -108,9 +135,22 @@
             '[狭义(利科尔)]“文本”：由语言文字组成的文学实体，代指“作品”，相对于作者、世界构成一个独立、自足的系统。',
           color: '',
           align: 'justify',
+          gradient: false,
+          gradientColor1: '#999999',
+          gradientColor2: '#ffffff',
+          gradientPreset: 'silver',
           descriptionWeight: 0,
           scale: 1,
         },
+        gradientList: [
+          { label: '银字', value: 'silver', color1: '#999999', color2: '#ffffff' },
+          { label: '金字', value: 'gold', color1: '#cc9900', color2: '#ffff00' },
+          { label: '红字', value: 'red', color1: '#990000', color2: '#ff0000' },
+          { label: '白字', value: 'white', color1: '#ffffff', color2: '#ffffff' },
+          { label: '黑字', value: 'black', color1: '#333333', color2: '#999999' },
+          { label: '蓝字', value: 'blue', color1: '#009999', color2: '#00ffff' },
+          { label: '绿字', value: 'green', color1: '#009900', color2: '#00ff00' },
+        ],
       };
     },
     mounted() {
@@ -155,6 +195,9 @@
           x: 20,
           y: 20,
           align: this.form.align,
+          gradient: this.form.gradient,
+          gradientColor1: this.form.gradientColor1,
+          gradientColor2: this.form.gradientColor2,
           strokeWidth: this.form.descriptionWeight,
           scale: this.form.scale,
         });
@@ -165,6 +208,16 @@
         this.leafer.add(this.compressText);
         const time2 = new Date().getTime();
         console.log('时间', time2 - time1);
+      },
+      changeGradientColor() {
+        this.form.gradientPreset = '';
+      },
+      changeGradientPreset(value) {
+        const gradient = this.gradientList.find(item => item.value === value);
+        if (gradient) {
+          this.form.gradientColor1 = gradient.color1;
+          this.form.gradientColor2 = gradient.color2;
+        }
       },
     },
     watch: {
@@ -184,62 +237,62 @@
 </script>
 
 <style lang="scss" scoped>
-  .compress-text-container {
-    height: 100vh;
-    display: flex;
-    overflow: hidden;
+.compress-text-container {
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
 
-    .page-main {
-      height: 100%;
-      overflow: auto;
-      flex-grow: 1;
-      position: relative;
+  .page-main {
+    height: 100%;
+    overflow: auto;
+    flex-grow: 1;
+    position: relative;
 
-      .leafer {
-        display: inline-flex;
-        margin: 20px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+    .leafer {
+      display: inline-flex;
+      margin: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+    }
+  }
+
+  .page-form {
+    height: 100%;
+    width: 400px;
+    flex-shrink: 0;
+    border-left: 1px solid var(--border-color);
+
+    .form-header {
+      padding: 30px 20px;
+      font-size: 18px;
+      font-weight: bold;
+      border-bottom: 1px solid var(--border-color);
+
+      .form-title {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      .form-description {
+        margin-top: 20px;
+        font-size: 12px;
+        font-weight: normal;
+        color: var(--info-color);
       }
     }
 
-    .page-form {
-      height: 100%;
-      width: 400px;
-      flex-shrink: 0;
-      border-left: 1px solid var(--border-color);
+    .form-main {
+      padding: 20px;
 
-      .form-header {
-        padding: 30px 20px;
-        font-size: 18px;
-        font-weight: bold;
-        border-bottom: 1px solid var(--border-color);
-
-        .form-title {
-          display: flex;
-          flex-wrap: wrap;
-          align-items: center;
-        }
-
-        .form-description {
-          margin-top: 20px;
-          font-size: 12px;
-          font-weight: normal;
-          color: var(--info-color);
-        }
-      }
-
-      .form-main {
-        padding: 20px;
-
-        ::v-deep(.el-form) {
-          .el-form-item {
-            .tip {
-              margin-left: 10px;
-              color: var(--normal-color);
-            }
+      ::v-deep(.el-form) {
+        .el-form-item {
+          .tip {
+            margin-left: 10px;
+            color: var(--normal-color);
           }
         }
       }
     }
   }
+}
 </style>
