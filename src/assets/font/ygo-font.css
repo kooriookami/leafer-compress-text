@@ -1,0 +1,6 @@
+@font-face {
+  font-family: "ygo-tip";
+  src: url("ygo-tip.woff2") format("woff2"),
+  url("ygo-tip.woff") format("woff");
+  font-display: swap;
+}
