@@ -16,6 +16,7 @@ export class CompressText {
     this.text = data.text || '';
     this.fontFamily = data.fontFamily || 'ygo-sc, 楷体, serif';
     this.fontSize = data.fontSize || 24;
+    this.fontWeight = data.fontWeight || 'normal';
     this.lineHeight = data.lineHeight || this.baseLineHeight;
     this.letterSpacing = data.letterSpacing || 0;
     this.align = data.align || 'justify';
@@ -26,10 +27,12 @@ export class CompressText {
     this.gradientColor2 = data.gradientColor2;
     this.rtFontFamily = data.rtFontFamily || 'ygo-tip, sans-serif';
     this.rtFontSize = data.rtFontSize || 13;
+    this.rtFontWeight = data.rtFontWeight || 'bold';
     this.rtLineHeight = data.rtLineHeight || this.baseLineHeight;
     this.rtLetterSpacing = data.rtLetterSpacing || 0;
     this.rtTop = data.rtTop || -9;
     this.rtColor = data.rtColor || 'black';
+    this.rtStrokeWidth = data.rtStrokeWidth || 0;
     this.width = data.width || 0;
     this.height = data.height || 0;
     this.x = data.x || 0;
@@ -98,7 +101,7 @@ export class CompressText {
           text: char.text,
           fontFamily: this.fontFamily,
           fontSize: this.fontSize * this.fontScale,
-          fontWeight: ruby.bold ? 'bold' : 'normal',
+          fontWeight: ruby.bold ? 'bold' : this.fontWeight,
           lineHeight: this.fontSize * this.lineHeight * this.fontScale,
           fill: this.color,
           stroke: this.strokeWidth ? this.color : null,
@@ -191,9 +194,12 @@ export class CompressText {
           text: rt.text,
           fontFamily: this.rtFontFamily,
           fontSize: this.rtFontSize * this.fontScale,
-          fontWeight: 'bold',
+          fontWeight: this.rtFontWeight,
           lineHeight: this.rtFontSize * this.rtLineHeight * this.fontScale,
           fill: this.rtColor,
+          stroke: this.rtStrokeWidth ? this.color : null,
+          strokeWidth: this.rtStrokeWidth,
+          strokeAlign: 'center',
           letterSpacing: this.rtLetterSpacing,
         });
         const bounds = rtLeaf.textDrawData.bounds;

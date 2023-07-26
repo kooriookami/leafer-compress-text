@@ -93,9 +93,9 @@
             </el-radio-button>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="字重">
+        <el-form-item label="描边">
           <el-slider
-            v-model="form.descriptionWeight"
+            v-model="form.strokeWidth"
             :min="0"
             :max="1"
             :step="0.1"
@@ -134,17 +134,17 @@
         form: {
           width: 800,
           height: 260,
-          text: '文本，是指书面语言的表现形式，从文学角度说，通常是具有完整、系统[含义(Message)]的一个句子或多个句子的组合。' +
+          text: '<b>文本，</b>是指书面语言的表现形式，从文学角度说，通常是具有完整、系统[含义(Message)]的一个句子或多个句子的组合。' +
             '一个文本可以是一个[句子(Sentence)]、一个[段落(Paragraph)]或者一个[篇章(Discourse)]。' +
-            '广义“文本”：任何由书写所固定下来的任何话语。' +
-            '[狭义(利科尔)]“文本”：由语言文字组成的文学实体，代指“作品”，相对于作者、世界构成一个独立、自足的系统。',
+            '<b>广义“文本”：</b>任何由书写所固定下来的任何话语。' +
+            '<b>[狭义(利科尔)]“文本”：</b>由语言文字组成的文学实体，代指“作品”，相对于作者、世界构成一个独立、自足的系统。',
           color: '',
           align: 'justify',
           gradient: false,
           gradientColor1: '#999999',
           gradientColor2: '#ffffff',
           gradientPreset: 'silver',
-          descriptionWeight: 0,
+          strokeWidth: 0,
           fontScale: 1,
         },
         gradientList: [
@@ -184,7 +184,6 @@
         });
       },
       drawText() {
-        const time1 = new Date().getTime();
         this.leafer.remove(this.compressText);
 
         const compressText = new CompressText({
@@ -196,6 +195,7 @@
           color: this.form.color,
           lineHeight: 2,
           rtFontSize: 14,
+          rtColor: this.form.color,
           rtTop: -6,
           x: 20,
           y: 20,
@@ -203,7 +203,7 @@
           gradient: this.form.gradient,
           gradientColor1: this.form.gradientColor1,
           gradientColor2: this.form.gradientColor2,
-          strokeWidth: this.form.descriptionWeight,
+          strokeWidth: this.form.strokeWidth,
           fontScale: this.form.fontScale,
         });
 
@@ -211,8 +211,6 @@
         this.textScale = compressText.textScale;
 
         this.leafer.add(this.compressText);
-        const time2 = new Date().getTime();
-        console.log('时间', time2 - time1);
       },
       changeGradientColor() {
         this.form.gradientPreset = '';
