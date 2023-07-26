@@ -103,7 +103,7 @@
         </el-form-item>
         <el-form-item label="缩放">
           <el-slider
-            v-model="form.scale"
+            v-model="form.fontScale"
             :min="0.5"
             :max="1.5"
             :step="0.02"
@@ -145,7 +145,7 @@
           gradientColor2: '#ffffff',
           gradientPreset: 'silver',
           descriptionWeight: 0,
-          scale: 1,
+          fontScale: 1,
         },
         gradientList: [
           { label: '银字', value: 'silver', color1: '#999999', color2: '#ffffff' },
@@ -204,7 +204,7 @@
           gradientColor1: this.form.gradientColor1,
           gradientColor2: this.form.gradientColor2,
           strokeWidth: this.form.descriptionWeight,
-          scale: this.form.scale,
+          fontScale: this.form.fontScale,
         });
 
         this.compressText = compressText.getCompressText();
