@@ -1,114 +1,108 @@
 <template>
   <div class="compress-text-container">
-    <div class="page-main">
-      <el-scrollbar>
-        <div id="leafer" class="leafer" />
-      </el-scrollbar>
+    <div class="compress-text">
+      <div ref="leafer" class="leafer" />
     </div>
-    <div class="page-form">
-      <el-scrollbar>
-        <div class="page-form-container">
-          <div class="form-header">
-            <div class="form-title">
-              <span>文本压缩 - Compress Text</span>
-            </div>
-            <div class="form-description">
-              <span>一个使用 LeaferJS 作为 Canvas 渲染引擎的文本压缩案例。</span>
-            </div>
-          </div>
-
-          <div class="form-main">
-            <p>当前文本压缩率：{{ textScale }}</p>
-            <el-form-item label="宽度">
-              <el-input-number
-                v-model="form.width"
-                :min="0"
-                :max="2000"
-                :precision="0"
-              />
-            </el-form-item>
-            <el-form-item label="高度">
-              <el-input-number
-                v-model="form.height"
-                :min="0"
-                :max="2000"
-                :precision="0"
-              />
-            </el-form-item>
-            <el-form :model="form" label-width="auto">
-              <el-form-item label="文本">
-                <el-input
-                  v-model="form.text"
-                  type="textarea"
-                  :autosize="{minRows: 3}"
-                  placeholder="请输入文本"
-                />
-              </el-form-item>
-            </el-form>
-            <el-form-item label="颜色">
-              <el-switch v-model="form.gradient" active-text="渐变色" />
-              <div v-if="form.gradient" style="width: 100%; margin-top: 10px">
-                <el-row :gutter="gutter">
-                  <el-col :span="8">
-                    <el-space :size="10" wrap>
-                      <el-color-picker v-model="form.gradientColor1" @change="changeGradientColor" />
-                      <el-color-picker v-model="form.gradientColor2" @change="changeGradientColor" />
-                    </el-space>
-                  </el-col>
-                  <el-col :span="16">
-                    <el-form-item style="margin-bottom: 0" label="预设">
-                      <el-select
-                        v-model="form.gradientPreset"
-                        placeholder="请选择预设"
-                        clearable
-                        @change="changeGradientPreset"
-                      >
-                        <el-option v-for="item in gradientList" :label="item.label" :value="item.value" />
-                      </el-select>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-              </div>
-              <div v-else style="width: 100%;margin-top: 10px">
-                <el-color-picker v-model="form.color" />
-                <span class="tip">（自动选择清空）</span>
-              </div>
-            </el-form-item>
-            <el-form-item label="对齐">
-              <el-radio-group v-model="form.align">
-                <el-radio-button label="left">
-                  左
-                </el-radio-button>
-                <el-radio-button label="center">
-                  中
-                </el-radio-button>
-                <el-radio-button label="right">
-                  右
-                </el-radio-button>
-                <el-radio-button label="justify">
-                  两端
-                </el-radio-button>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item label="字重">
-              <el-slider
-                v-model="form.descriptionWeight"
-                :min="0"
-                :max="1"
-                :step="0.1"
-              />
-            </el-form-item>
-            <el-form-item label="缩放">
-              <el-slider
-                v-model="form.scale"
-                :min="0.5"
-                :max="1.5"
-                :step="0.02"
-              />
-            </el-form-item>
-          </div>
+    <div class="form">
+      <div class="form-header">
+        <div class="form-title">
+          <span>文本压缩 - Compress Text</span>
         </div>
-      </el-scrollbar>
+        <div class="form-description">
+          <span>一个使用 LeaferJS 作为 Canvas 渲染引擎的文本压缩案例。</span>
+        </div>
+      </div>
+
+      <div class="form-main">
+        <p>当前文本压缩率：{{ textScale }}</p>
+        <el-form-item label="宽度">
+          <el-input-number
+            v-model="form.width"
+            :min="0"
+            :max="2000"
+            :precision="0"
+          />
+        </el-form-item>
+        <el-form-item label="高度">
+          <el-input-number
+            v-model="form.height"
+            :min="0"
+            :max="2000"
+            :precision="0"
+          />
+        </el-form-item>
+        <el-form :model="form" label-width="auto">
+          <el-form-item label="文本">
+            <el-input
+              v-model="form.text"
+              type="textarea"
+              :autosize="{minRows: 3}"
+              placeholder="请输入文本"
+            />
+          </el-form-item>
+        </el-form>
+        <el-form-item label="颜色">
+          <el-switch v-model="form.gradient" active-text="渐变色" />
+          <div v-if="form.gradient" style="width: 100%; margin-top: 10px">
+            <el-row :gutter="gutter">
+              <el-col :span="8">
+                <el-space :size="10" wrap>
+                  <el-color-picker v-model="form.gradientColor1" @change="changeGradientColor" />
+                  <el-color-picker v-model="form.gradientColor2" @change="changeGradientColor" />
+                </el-space>
+              </el-col>
+              <el-col :span="16">
+                <el-form-item style="margin-bottom: 0" label="预设">
+                  <el-select
+                    v-model="form.gradientPreset"
+                    placeholder="请选择预设"
+                    clearable
+                    @change="changeGradientPreset"
+                  >
+                    <el-option v-for="item in gradientList" :label="item.label" :value="item.value" />
+                  </el-select>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </div>
+          <div v-else style="width: 100%;margin-top: 10px">
+            <el-color-picker v-model="form.color" />
+            <span class="tip">（自动选择清空）</span>
+          </div>
+        </el-form-item>
+        <el-form-item label="对齐">
+          <el-radio-group v-model="form.align">
+            <el-radio-button label="left">
+              左
+            </el-radio-button>
+            <el-radio-button label="center">
+              中
+            </el-radio-button>
+            <el-radio-button label="right">
+              右
+            </el-radio-button>
+            <el-radio-button label="justify">
+              两端
+            </el-radio-button>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="字重">
+          <el-slider
+            v-model="form.descriptionWeight"
+            :min="0"
+            :max="1"
+            :step="0.1"
+          />
+        </el-form-item>
+        <el-form-item label="缩放">
+          <el-slider
+            v-model="form.scale"
+            :min="0.5"
+            :max="1.5"
+            :step="0.02"
+          />
+        </el-form-item>
+      </div>
     </div>
   </div>
 </template>
@@ -169,7 +163,7 @@
     methods: {
       initLeafer() {
         this.leafer = new Leafer({
-          view: 'leafer',
+          view: this.$refs.leafer,
           width: 1200,
           height: 800,
           type: 'user',
@@ -237,62 +231,63 @@
 </script>
 
 <style lang="scss" scoped>
-.compress-text-container {
-  height: 100vh;
-  display: flex;
-  overflow: hidden;
+  .compress-text-container {
+    height: 100vh;
+    display: flex;
+    overflow: hidden;
 
-  .page-main {
-    height: 100%;
-    overflow: auto;
-    flex-grow: 1;
-    position: relative;
-
-    .leafer {
-      display: inline-flex;
-      margin: 20px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
-    }
-  }
-
-  .page-form {
-    height: 100%;
-    width: 400px;
-    flex-shrink: 0;
-    border-left: 1px solid var(--border-color);
-
-    .form-header {
-      padding: 30px 20px;
-      font-size: 18px;
-      font-weight: bold;
-      border-bottom: 1px solid var(--border-color);
-
-      .form-title {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-      }
-
-      .form-description {
-        margin-top: 20px;
-        font-size: 12px;
-        font-weight: normal;
-        color: var(--info-color);
-      }
-    }
-
-    .form-main {
+    .compress-text {
+      height: 100%;
+      overflow: auto;
+      flex-grow: 1;
+      position: relative;
       padding: 20px;
 
-      ::v-deep(.el-form) {
-        .el-form-item {
-          .tip {
-            margin-left: 10px;
-            color: var(--normal-color);
+      .leafer {
+        display: inline-flex;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+      }
+    }
+
+    .form {
+      height: 100%;
+      overflow: auto;
+      width: 400px;
+      flex-shrink: 0;
+      border-left: 1px solid var(--border-color);
+
+      .form-header {
+        padding: 30px 20px;
+        font-size: 18px;
+        font-weight: bold;
+        border-bottom: 1px solid var(--border-color);
+
+        .form-title {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+        }
+
+        .form-description {
+          margin-top: 20px;
+          font-size: 12px;
+          font-weight: normal;
+          color: var(--info-color);
+        }
+      }
+
+      .form-main {
+        padding: 20px;
+
+        ::v-deep(.el-form) {
+          .el-form-item {
+            .tip {
+              margin-left: 10px;
+              color: var(--normal-color);
+            }
           }
         }
       }
     }
   }
-}
 </style>

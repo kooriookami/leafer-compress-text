@@ -13,4 +13,7 @@ export default defineConfig({
     },
     extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue'], // 扩展了.vue后缀
   },
+  build: {
+    outDir: 'docs',
+  },
 });
