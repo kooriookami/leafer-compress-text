@@ -21,6 +21,7 @@
       </div>
 
       <div class="form-main">
+        <p v-if="form.firstLineCompress">首行文本压缩率：{{ firstLineTextScale }}</p>
         <p>当前文本压缩率：{{ textScale }}</p>
         <el-form-item label="宽度">
           <el-input-number
@@ -40,8 +41,10 @@
         </el-form-item>
         <el-form :model="form" label-width="auto">
           <el-form-item label="文本">
+            <el-switch v-model="form.firstLineCompress" active-text="首行压缩" />
             <el-input
               v-model="form.text"
+              style="margin-top: 10px"
               type="textarea"
               :autosize="{minRows: 3}"
               placeholder="请输入文本"
@@ -130,6 +133,7 @@
         fontLoading: false,
         leafer: null,
         compressText: null,
+        firstLineTextScale: 1,
         textScale: 1,
         form: {
           width: 800,
@@ -138,6 +142,7 @@
             '一个文本可以是一个[句子(Sentence)]、一个[段落(Paragraph)]或者一个[篇章(Discourse)]。' +
             '<b>广义“文本”：</b>任何由书写所固定下来的任何话语。' +
             '<b>[狭义(利科尔)]“文本”：</b>由语言文字组成的文学实体，代指“作品”，相对于作者、世界构成一个独立、自足的系统。',
+          firstLineCompress: false,
           color: '',
           align: 'justify',
           gradient: false,
@@ -199,6 +204,7 @@
           rtTop: -6,
           x: 20,
           y: 20,
+          firstLineCompress: this.form.firstLineCompress,
           align: this.form.align,
           gradient: this.form.gradient,
           gradientColor1: this.form.gradientColor1,
@@ -208,6 +214,7 @@
         });
 
         this.compressText = compressText.getCompressText();
+        this.firstLineTextScale = compressText.firstLineTextScale;
         this.textScale = compressText.textScale;
 
         this.leafer.add(this.compressText);
