@@ -5,3 +5,6 @@
 ## 在线演示
 
 [在线演示](https://kooriookami.github.io/compress-text/)
+
+## 流程图
+![process](src/assets/image/process.png)

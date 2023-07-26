@@ -34,7 +34,7 @@ export class CompressText {
     this.height = data.height || 0;
     this.x = data.x || 0;
     this.y = data.y || 0;
-    this.scale = data.scale || 1;
+    this.fontScale = data.fontScale || 1;
     this.autoSmallSize = data.autoSmallSize;
     this.smallFontSize = data.smallFontSize || this.fontSize;
     this.zIndex = data.zIndex || 0;
@@ -83,7 +83,7 @@ export class CompressText {
     this.createRuby();
     this.compressRuby();
     this.alignRuby();
-    this.compressRt();
+    this.createRt();
     this.createGradient();
     return this.group;
   }
@@ -97,9 +97,9 @@ export class CompressText {
         const charLeaf = new Text({
           text: char.text,
           fontFamily: this.fontFamily,
-          fontSize: this.fontSize * this.scale,
+          fontSize: this.fontSize * this.fontScale,
           fontWeight: ruby.bold ? 'bold' : 'normal',
-          lineHeight: this.fontSize * this.lineHeight * this.scale,
+          lineHeight: this.fontSize * this.lineHeight * this.fontScale,
           fill: this.color,
           stroke: this.strokeWidth ? this.color : null,
           strokeWidth: this.strokeWidth,
@@ -133,8 +133,8 @@ export class CompressText {
         this.updateTextScale();
         this.currentY + lastChar.height > this.height ? end = scale : start = scale;
         if (this.currentY + lastChar.height <= this.height && end - start <= 0.01) {
-          // 如果是autoSmallSize，灵摆和效果栏字体判断缩小，当字号大于1不执行
-          if (this.autoSmallSize && scale < 0.7 && this.scale <= 1 && !this.isSmallSize) {
+          // 如果是autoSmallSize，字体判断缩小，当字号大于1不执行
+          if (this.autoSmallSize && scale < 0.7 && this.fontScale <= 1 && !this.isSmallSize) {
             this.isSmallSize = true;
             this.updateFontSize();
           }
@@ -182,17 +182,17 @@ export class CompressText {
     }
   }
 
-  // 压缩注音
-  compressRt() {
+  // 创建注音
+  createRt() {
     this.parseList.forEach(item => {
       const rt = item.rt;
       if (rt.text) {
         const rtLeaf = new Text({
           text: rt.text,
           fontFamily: this.rtFontFamily,
-          fontSize: this.rtFontSize * this.scale,
+          fontSize: this.rtFontSize * this.fontScale,
           fontWeight: 'bold',
-          lineHeight: this.rtFontSize * this.rtLineHeight * this.scale,
+          lineHeight: this.rtFontSize * this.rtLineHeight * this.fontScale,
           fill: this.rtColor,
           letterSpacing: this.rtLetterSpacing,
         });
@@ -272,8 +272,8 @@ export class CompressText {
     const charList = this.parseList.map(item => item.ruby.charList).flat();
     charList.forEach(char => {
       const charLeaf = char.charLeaf;
-      charLeaf.fontSize = fontSize * this.scale;
-      charLeaf.lineHeight = fontSize * this.lineHeight * this.scale;
+      charLeaf.fontSize = fontSize * this.fontScale;
+      charLeaf.lineHeight = fontSize * this.lineHeight * this.fontScale;
       char.originalWidth *= sizePercent;
       char.originalHeight *= sizePercent;
       char.width *= sizePercent;
@@ -297,7 +297,7 @@ export class CompressText {
   addRow() {
     const fontSize = this.isSmallSize ? this.smallFontSize : this.fontSize;
     this.currentX = 0;
-    this.currentY += fontSize * this.lineHeight * this.scale;
+    this.currentY += fontSize * this.lineHeight * this.fontScale;
     this.currentLine++;
   }
 
@@ -315,11 +315,11 @@ export class CompressText {
       const lastPaddingRight = lastChar.paddingRight || 0;
       const rubyWidth = lastCharLeaf.x - firstCharLeaf.x + lastChar.width + firstPaddingLeft + lastPaddingRight;
 
-      rtLeaf.y = firstCharLeaf.y + this.rtTop * this.scale;
+      rtLeaf.y = firstCharLeaf.y + this.rtTop * this.fontScale;
 
       if (rt.width / rubyWidth < 0.95 && ruby.text.length > 1) {
         // 拉伸两端对齐
-        const maxLetterSpacing = this.rtFontSize * this.scale * 3;
+        const maxLetterSpacing = this.rtFontSize * this.fontScale * 3;
         const newLetterSpacing = (rubyWidth * 0.95 - rt.width) / (rt.text.length - 1);
         rtLeaf.letterSpacing = Math.min(newLetterSpacing, maxLetterSpacing);
         rt.width = rt.originalWidth + rtLeaf.letterSpacing * (rt.text.length - 1);
