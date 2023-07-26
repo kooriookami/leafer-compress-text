@@ -7,9 +7,16 @@
       <div class="form-header">
         <div class="form-title">
           <span>文本压缩 - Compress Text</span>
+          <Icon
+            class="github-icon"
+            icon="ri:github-fill"
+            width="24"
+            height="24"
+            @click="toGithub"
+          />
         </div>
         <div class="form-description">
-          <span>一个使用 LeaferJS 作为 Canvas 渲染引擎的文本压缩案例。</span>
+          <span>一个使用 LeaferJS 作为 Canvas 渲染引擎的文本压缩示例</span>
         </div>
       </div>
 
@@ -110,9 +117,13 @@
 <script>
   import { Leafer } from 'leafer-ui';
   import { CompressText } from '@/utils/compress-text';
+  import { Icon } from '@iconify/vue';
 
   export default {
     name: 'CompressText',
+    components: {
+      Icon,
+    },
     data() {
       return {
         gutter: 10,
@@ -213,6 +224,9 @@
           this.form.gradientColor2 = gradient.color2;
         }
       },
+      toGithub() {
+        open('https://github.com/kooriookami/compress-text');
+      },
     },
     watch: {
       fontLoading() {
@@ -266,6 +280,11 @@
           display: flex;
           flex-wrap: wrap;
           align-items: center;
+
+          .github-icon {
+            margin-left: 5px;
+            cursor: pointer;
+          }
         }
 
         .form-description {
