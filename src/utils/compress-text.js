@@ -13,6 +13,7 @@ export class CompressText {
     this.textScale = 1; // 文本缩放比例
     this.firstLineTextScale = 1; // 首行文本缩放比例
     this.group = null; // Leafer文本组
+    this.tempGroup = null; // 临时组
     this.needCompressTwice = false; // 是否需要二次压缩
 
     this.text = data.text ?? '';
@@ -44,6 +45,21 @@ export class CompressText {
     this.autoSmallSize = data.autoSmallSize;
     this.smallFontSize = data.smallFontSize ?? this.fontSize;
     this.zIndex = data.zIndex ?? 0;
+
+    this.compressText();
+  }
+
+  set(data) {
+    let update = false;
+    Object.keys(data).forEach(key => {
+      if (this[key] !== data[key]) {
+        this[key] = data[key];
+        update = true;
+      }
+    });
+    if (update) {
+      this.compressText();
+    }
   }
 
   // 获取解析后的文本列表
@@ -94,20 +110,38 @@ export class CompressText {
   }
 
   // 获取压缩文本
-  getCompressText() {
+  compressText() {
+    const time1=new Date().getTime();
+    this.currentX=0;
+    this.currentY=0;
+    this.currentLine=0;
+    this.textScale = 1;
+    this.firstLineTextScale = 1;
+    this.needCompressTwice = false;
     this.parseList = this.getParseList();
     this.newlineList = this.getNewlineList();
-    this.group = new Group({
-      x: this.x,
-      y: this.y,
-      zIndex: this.zIndex,
-    });
+    // if (!this.group){
+    //   this.group = new Group({
+    //     x: this.x,
+    //     y: this.y,
+    //     zIndex: this.zIndex,
+    //   });
+    // }
+    // if (this.tempGroup){
+    //   this.group.remove(this.tempGroup);
+    // }
+    // this.tempGroup=new Group({
+    //   x:0,
+    //   y:0,
+    // });
     this.createRuby();
     this.compressRuby();
     this.alignRuby();
     this.createRt();
     this.createGradient();
-    return this.group;
+    // this.group.add(this.tempGroup);
+    const time2=new Date().getTime();
+    console.log(time2 - time1);
   }
 
   // 创建文本
@@ -134,7 +168,7 @@ export class CompressText {
         char.originalHeight = bounds.height;
         char.width = bounds.width;
         char.height = bounds.height;
-        this.group.add(charLeaf);
+        // this.tempGroup.add(charLeaf);
       });
     });
     this.updateTextScale();
@@ -242,7 +276,7 @@ export class CompressText {
         rt.width = bounds.width;
         rt.height = bounds.height;
         this.positionRt(item);
-        this.group.add(rtLeaf);
+        // this.tempGroup.add(rtLeaf);
       }
     });
     // 如果需要再次压缩
