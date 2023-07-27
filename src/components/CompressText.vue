@@ -210,7 +210,7 @@
             strokeWidth: this.form.strokeWidth,
             fontScale: this.form.fontScale,
           });
-          // this.leafer.add(this.compressText.group);
+          this.leafer.add(this.compressText.group);
         }
         this.compressText.set({
           text: this.form.text,
