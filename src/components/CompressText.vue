@@ -77,7 +77,6 @@
           </div>
           <div v-else style="width: 100%;margin-top: 10px">
             <el-color-picker v-model="form.color" />
-            <span class="tip">（自动选择清空）</span>
           </div>
         </el-form-item>
         <el-form-item label="对齐">
@@ -143,7 +142,7 @@
             '<b>广义“文本”：</b>任何由书写所固定下来的任何话语。' +
             '<b>[狭义(利科尔)]“文本”：</b>由语言文字组成的文学实体，代指“作品”，相对于作者、世界构成一个独立、自足的系统。',
           firstLineCompress: false,
-          color: '',
+          color: '#000000',
           align: 'justify',
           gradient: false,
           gradientColor1: '#999999',
