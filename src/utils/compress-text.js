@@ -2,7 +2,7 @@ import { Group, Text } from 'leafer-ui';
 import { splitBreakWord } from './split-break-word.js';
 
 export class CompressText {
-  constructor(data) {
+  constructor(data = {}) {
     this.baseLineHeight = 1.15; // 基础行高
     this.noCompressText = '●①②③④⑤⑥⑦⑧⑨⑩'; // 不压缩的文本
     this.parseList = []; // 解析后的文本列表
@@ -111,28 +111,21 @@ export class CompressText {
 
   // 获取压缩文本
   compressText() {
-    const time1=new Date().getTime();
-    this.currentX=0;
-    this.currentY=0;
-    this.currentLine=0;
     this.textScale = 1;
     this.firstLineTextScale = 1;
     this.needCompressTwice = false;
     this.parseList = this.getParseList();
     this.newlineList = this.getNewlineList();
-    if (!this.group){
-      this.group = new Group({
-        x: this.x,
-        y: this.y,
-        zIndex: this.zIndex,
-      });
+    if (!this.group) {
+      this.group = new Group();
     }
-    if (this.tempGroup){
+    if (this.tempGroup) {
       this.group.remove(this.tempGroup);
     }
-    this.tempGroup=new Group({
-      x:0,
-      y:0,
+    this.tempGroup = new Group({
+      x: this.x,
+      y: this.y,
+      zIndex: this.zIndex,
     });
     this.createRuby();
     this.compressRuby();
@@ -140,8 +133,6 @@ export class CompressText {
     this.createRt();
     this.createGradient();
     this.group.add(this.tempGroup);
-    const time2=new Date().getTime();
-    console.log(time2 - time1);
   }
 
   // 创建文本

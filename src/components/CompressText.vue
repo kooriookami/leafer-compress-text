@@ -121,6 +121,8 @@
   import { CompressText } from '@/utils/compress-text';
   import { Icon } from '@iconify/vue';
 
+  let compressText = null;
+
   export default {
     name: 'CompressText',
     components: {
@@ -131,7 +133,6 @@
         gutter: 10,
         fontLoading: false,
         leafer: null,
-        compressText: null,
         firstLineTextScale: 1,
         textScale: 1,
         form: {
@@ -188,31 +189,12 @@
         });
       },
       drawText() {
-        if (!this.compressText) {
-          this.compressText = new CompressText({
-            text: this.form.text,
-            width: this.form.width,
-            height: this.form.height,
-            fontFamily: '\'Helvetica Neue\', Helvetica, \'PingFang SC\', \'Hiragino Sans GB\', \'Microsoft YaHei\', \'微软雅黑\', Arial, sans-serif',
-            fontSize: 24,
-            color: this.form.color,
-            lineHeight: 2,
-            rtFontSize: 14,
-            rtColor: this.form.color,
-            rtTop: -6,
-            x: 20,
-            y: 20,
-            firstLineCompress: this.form.firstLineCompress,
-            align: this.form.align,
-            gradient: this.form.gradient,
-            gradientColor1: this.form.gradientColor1,
-            gradientColor2: this.form.gradientColor2,
-            strokeWidth: this.form.strokeWidth,
-            fontScale: this.form.fontScale,
-          });
-          this.leafer.add(this.compressText.group);
+        // 如果此处用this.compressText绑定，vue会进行proxy代理，导致性能下降严重
+        if (!compressText) {
+          compressText = new CompressText();
+          this.leafer.add(compressText.group);
         }
-        this.compressText.set({
+        compressText.set({
           text: this.form.text,
           width: this.form.width,
           height: this.form.height,
@@ -232,10 +214,12 @@
           gradientColor2: this.form.gradientColor2,
           strokeWidth: this.form.strokeWidth,
           fontScale: this.form.fontScale,
+          // autoSmallSize: true,
+          // smallFontSize: 18,
         });
 
-        this.firstLineTextScale = this.compressText.firstLineTextScale;
-        this.textScale = this.compressText.textScale;
+        this.firstLineTextScale = compressText.firstLineTextScale;
+        this.textScale = compressText.textScale;
       },
       changeGradientColor() {
         this.form.gradientPreset = '';
