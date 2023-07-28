@@ -182,7 +182,7 @@
         // 如果此处用this.compressText绑定，vue会进行proxy代理，导致性能下降严重
         if (!compressText) {
           compressText = new CompressText();
-          this.leafer.add(compressText.group);
+          this.leafer.add(compressText);
         }
         compressText.set({
           text: this.form.text,

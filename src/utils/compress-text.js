@@ -2,8 +2,9 @@ import FontFaceObserver from 'fontfaceobserver';
 import { Group, Text } from 'leafer-ui';
 import { splitBreakWord } from './split-break-word.js';
 
-export class CompressText {
+export class CompressText extends Group {
   constructor(data = {}) {
+    super();
     this.baseLineHeight = 1.15; // 基础行高
     this.noCompressText = '●①②③④⑤⑥⑦⑧⑨⑩'; // 不压缩的文本
     this.parseList = []; // 解析后的文本列表
@@ -145,12 +146,12 @@ export class CompressText {
     this.newlineList = this.getNewlineList();
     if (!this.group) {
       this.group = new Group();
+      this.add(this.group);
     }
     this.group.removeAll();
     this.tempGroup = new Group({
-      x: this.x,
-      y: this.y,
-      zIndex: this.zIndex,
+      x: 0,
+      y: 0,
     });
     this.createRuby();
     this.compressRuby();
@@ -469,8 +470,9 @@ export class CompressText {
             },
             stroke: 'rgba(0, 0, 0, 0.6)',
             strokeWidth: fontSize * 0.025 * this.fontScale,
-            strokeAlign: 'center',
+            strokeAlign: 'outside',
             shadow: {
+              blur: fontSize * 0.025 * this.fontScale,
               x: fontSize * 0.025 * this.fontScale,
               y: fontSize * 0.045 * this.fontScale,
               color: 'rgba(0, 0, 0, 0.6)',
