@@ -80,7 +80,7 @@
           </div>
         </el-form-item>
         <el-form-item label="对齐">
-          <el-radio-group v-model="form.align">
+          <el-radio-group v-model="form.textAlign">
             <el-radio-button label="left">
               左
             </el-radio-button>
@@ -143,7 +143,7 @@
             '<b>[狭义(利科尔)]“文本”：</b>由语言文字组成的文学实体，代指“作品”，相对于作者、世界构成一个独立、自足的系统。',
           firstLineCompress: false,
           color: '#000000',
-          align: 'justify',
+          textAlign: 'justify',
           gradient: false,
           gradientColor1: '#999999',
           gradientColor2: '#ffffff',
@@ -198,7 +198,7 @@
           x: 20,
           y: 20,
           firstLineCompress: this.form.firstLineCompress,
-          align: this.form.align,
+          textAlign: this.form.textAlign,
           gradient: this.form.gradient,
           gradientColor1: this.form.gradientColor1,
           gradientColor2: this.form.gradientColor2,

@@ -25,7 +25,7 @@ export class CompressText extends Group {
     this.lineHeight = data.lineHeight ?? this.baseLineHeight;
     this.letterSpacing = data.letterSpacing ?? 0;
     this.firstLineCompress = data.firstLineCompress;
-    this.align = data.align ?? 'justify';
+    this.textAlign = data.textAlign ?? 'justify';
     this.color = data.color ?? 'black';
     this.strokeWidth = data.strokeWidth ?? 0;
     this.gradient = data.gradient;
@@ -94,7 +94,7 @@ export class CompressText extends Group {
   getParseList() {
     let bold = false;
     // 正则的捕获圆括号不要随意修改
-    return this.text.trimEnd().split(/(\[.*?\(.*?\)]|<b>|<\/b>|\n)/).filter(value => value).map(value => {
+    return String(this.text).trimEnd().split(/(\[.*?\(.*?\)]|<b>|<\/b>|\n)/).filter(value => value).map(value => {
       let rubyText = value;
       let rtText = '';
       if (/\[.*?\(.*?\)]/g.test(value)) {
@@ -234,7 +234,7 @@ export class CompressText extends Group {
   // 对齐ruby
   alignRuby() {
     const charList = this.parseList.map(item => item.ruby.charList).flat();
-    const alignLine = this.textScale < 1 || ['center', 'right'].includes(this.align) ? this.currentLine + 1 : this.currentLine;
+    const alignLine = this.textScale < 1 || ['center', 'right'].includes(this.textAlign) ? this.currentLine + 1 : this.currentLine;
     for (let line = 0; line < alignLine; line++) {
       const lineList = charList.filter(item => item.line === line);
       if (lineList.length) {
@@ -243,19 +243,19 @@ export class CompressText extends Group {
         const lastPaddingRight = lastChar.paddingRight || 0;
         const remainWidth = this.width - lastCharLeaf.x - lastChar.width - lastPaddingRight;
         if (remainWidth > 0) {
-          if (this.align === 'center') {
+          if (this.textAlign === 'center') {
             const offset = remainWidth / 2;
             lineList.forEach(char => {
               const charLeaf = char.charLeaf;
               charLeaf.x += offset;
             });
-          } else if (this.align === 'right') {
+          } else if (this.textAlign === 'right') {
             const offset = remainWidth;
             lineList.forEach(char => {
               const charLeaf = char.charLeaf;
               charLeaf.x += offset;
             });
-          } else if (this.align === 'justify') {
+          } else if (this.textAlign === 'justify') {
             if (lineList.length > 1 && lastChar.text !== '\n') {
               const gap = remainWidth / (lineList.length - 1);
               lineList.forEach((char, index) => {
