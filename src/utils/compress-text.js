@@ -202,7 +202,7 @@ export class CompressText extends Group {
         const paddingLeft = char.paddingLeft || 0;
         const paddingRight = char.paddingRight || 0;
         firstNewlineTotalWidth += char.originalWidth;
-        maxWidth -= this.letterSpacing + paddingLeft + paddingRight;
+        maxWidth -= paddingLeft + paddingRight;
       });
       this.firstLineTextScale = Math.min(Math.floor(maxWidth / firstNewlineTotalWidth * 1000) / 1000, 1);
       this.updateTextScale();
@@ -241,7 +241,7 @@ export class CompressText extends Group {
         const lastChar = lineList[lineList.length - 1];
         const lastCharLeaf = lastChar.charLeaf;
         const lastPaddingRight = lastChar.paddingRight || 0;
-        const remainWidth = this.width - lastCharLeaf.x - lastChar.width - this.letterSpacing - lastPaddingRight;
+        const remainWidth = this.width - lastCharLeaf.x - lastChar.width - lastPaddingRight;
         if (remainWidth > 0) {
           if (this.align === 'center') {
             const offset = remainWidth / 2;
@@ -336,9 +336,9 @@ export class CompressText extends Group {
           }
           if (rt.text) {
             noBreakCharList.push(char);
-            noBreakTotalWidth += char.width + this.letterSpacing + paddingLeft + paddingRight;
+            noBreakTotalWidth += char.width + paddingLeft + paddingRight;
           } else {
-            const totalWidth = char.width + this.letterSpacing + paddingLeft + paddingRight;
+            const totalWidth = char.width + paddingLeft + paddingRight;
             if (this.width && totalWidth < this.width && this.currentX + totalWidth > this.width) {
               this.addRow();
             }
@@ -389,7 +389,7 @@ export class CompressText extends Group {
     const charLeaf = char.charLeaf;
     charLeaf.x = this.currentX + paddingLeft;
     charLeaf.y = this.currentY;
-    this.currentX += char.width + this.letterSpacing + paddingLeft + paddingRight;
+    this.currentX += char.width + paddingLeft + paddingRight;
     char.line = this.currentLine;
   }
 
