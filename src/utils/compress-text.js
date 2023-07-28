@@ -27,8 +27,8 @@ export class CompressText {
     this.color = data.color ?? 'black';
     this.strokeWidth = data.strokeWidth ?? 0;
     this.gradient = data.gradient;
-    this.gradientColor1 = data.gradientColor1;
-    this.gradientColor2 = data.gradientColor2;
+    this.gradientColor1 = data.gradientColor1 || '#999999';
+    this.gradientColor2 = data.gradientColor2 || '#ffffff';
     this.rtFontFamily = data.rtFontFamily ?? 'ygo-tip, sans-serif';
     this.rtFontSize = data.rtFontSize ?? 13;
     this.rtFontWeight = data.rtFontWeight ?? 'bold';
@@ -119,9 +119,7 @@ export class CompressText {
     if (!this.group) {
       this.group = new Group();
     }
-    if (this.tempGroup) {
-      this.group.remove(this.tempGroup);
-    }
+    this.group.removeAll();
     this.tempGroup = new Group({
       x: this.x,
       y: this.y,
@@ -425,15 +423,32 @@ export class CompressText {
   // 创建渐变
   createGradient() {
     if (this.gradient) {
+      const fontSize = this.isSmallSize ? this.smallFontSize : this.fontSize;
       this.parseList.forEach(item => {
         const ruby = item.ruby;
         const charList = ruby.charList;
         charList.forEach(char => {
           const charLeaf = char.charLeaf;
-          charLeaf.fill = {
-            type: 'linear',
-            stops: [{ offset: 0, color: '#FF4B4B' }, { offset: 1, color: '#FEB027' }],
-          };
+          charLeaf.set({
+            fill: {
+              type: 'linear',
+              stops: [
+                { offset: 0, color: this.gradientColor1 },
+                { offset: 0.4, color: this.gradientColor2 },
+                { offset: 0.55, color: this.gradientColor2 },
+                { offset: 0.6, color: this.gradientColor1 },
+                { offset: 0.75, color: this.gradientColor2 },
+              ],
+            },
+            stroke: 'rgba(0, 0, 0, 0.6)',
+            strokeWidth: fontSize * 0.025 * this.fontScale,
+            strokeAlign: 'center',
+            shadow: {
+              x: fontSize * 0.025 * this.fontScale,
+              y: fontSize * 0.045 * this.fontScale,
+              color: 'rgba(0, 0, 0, 0.6)',
+            },
+          });
         });
       });
     }
