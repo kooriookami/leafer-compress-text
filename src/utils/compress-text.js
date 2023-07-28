@@ -1,3 +1,4 @@
+import FontFaceObserver from 'fontfaceobserver';
 import { Group, Text } from 'leafer-ui';
 import { splitBreakWord } from './split-break-word.js';
 
@@ -46,20 +47,46 @@ export class CompressText {
     this.smallFontSize = data.smallFontSize ?? this.fontSize;
     this.zIndex = data.zIndex ?? 0;
 
+    this.loadFont();
     this.compressText();
   }
 
   set(data) {
-    let update = false;
+    let needLoadFont = false;
+    let needCompressText = false;
     Object.keys(data).forEach(key => {
       if (this[key] !== data[key]) {
         this[key] = data[key];
-        update = true;
+        if (['fontFamily', 'rtFontFamily'].includes(key)) {
+          needLoadFont = true;
+        }
+        needCompressText = true;
       }
     });
-    if (update) {
+    if (needLoadFont) {
+      this.loadFont();
+    }
+    if (needCompressText) {
       this.compressText();
     }
+  }
+
+  loadFont() {
+    const fontSet = new Set();
+    this.fontFamily.split(',').forEach(value => {
+      fontSet.add(value.trim());
+    });
+    this.rtFontFamily.split(',').forEach(value => {
+      fontSet.add(value.trim());
+    });
+
+    fontSet.forEach(font => {
+      const fontObserver = new FontFaceObserver(font);
+      fontObserver.load().then(() => {
+        this.compressText();
+      }).catch(() => {
+      });
+    });
   }
 
   // 获取解析后的文本列表

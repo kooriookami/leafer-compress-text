@@ -131,7 +131,6 @@
     data() {
       return {
         gutter: 10,
-        fontLoading: false,
         leafer: null,
         firstLineTextScale: 1,
         textScale: 1,
@@ -164,15 +163,6 @@
       };
     },
     mounted() {
-      document.fonts.onloading = () => {
-        this.fontLoading = true;
-      };
-      document.fonts.onloadingdone = () => {
-        this.fontLoading = false;
-      };
-      document.fonts.onloadingerror = () => {
-        this.fontLoading = false;
-      };
       this.initLeafer();
       this.drawText();
     },
@@ -198,7 +188,7 @@
           text: this.form.text,
           width: this.form.width,
           height: this.form.height,
-          fontFamily: '\'Helvetica Neue\', Helvetica, \'PingFang SC\', \'Hiragino Sans GB\', \'Microsoft YaHei\', \'微软雅黑\', Arial, sans-serif',
+          fontFamily: 'Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, 微软雅黑, Arial, sans-serif',
           fontSize: 24,
           color: this.form.color,
           lineHeight: 2,
@@ -236,11 +226,6 @@
       },
     },
     watch: {
-      fontLoading() {
-        if (!this.fontLoading) {
-          this.drawText();
-        }
-      },
       form: {
         handler() {
           this.drawText();
