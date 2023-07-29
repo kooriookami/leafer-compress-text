@@ -41,6 +41,7 @@ export class CompressText extends Group {
     this.rtTop = data.rtTop ?? -9;
     this.rtColor = data.rtColor ?? 'black';
     this.rtStrokeWidth = data.rtStrokeWidth ?? 0;
+    this.rtFontScaleX = data.rtFontScaleX ?? 1;
     this.width = data.width ?? 0;
     this.height = data.height ?? 0;
     this.x = data.x ?? 0;
@@ -422,7 +423,12 @@ export class CompressText extends Group {
 
       rtLeaf.y = firstCharLeaf.y + this.rtTop * this.fontScale;
 
-      if (rt.width / rubyWidth < 0.95 && ruby.text.length > 1) {
+      if (this.rtFontScaleX !== 1) {
+        // 特殊情况不做压缩，只居中对齐
+        rtLeaf.scaleX = this.rtFontScaleX;
+        rt.width = rt.originalWidth * this.rtFontScaleX;
+        rtLeaf.x = firstCharLeaf.x + (rubyWidth - rt.width) / 2;
+      } else if (rt.width / rubyWidth < 0.95 && ruby.text.length > 1) {
         // 拉伸两端对齐
         const maxLetterSpacing = this.rtFontSize * this.fontScale * 3;
         const newLetterSpacing = (rubyWidth * 0.95 - rt.width) / (rt.text.length - 1);
