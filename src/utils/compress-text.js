@@ -15,6 +15,7 @@ export class CompressText extends Group {
     this.currentLine = 0; // 当前行数
     this.textScale = 1; // 文本缩放比例
     this.firstLineTextScale = 1; // 首行文本缩放比例
+    this.isSmallSize = false; // 是否是小文字
     this.group = null; // Leafer文本组
     this.tempGroup = null; // 临时组
     this.needCompressTwice = false; // 是否需要二次压缩
@@ -27,6 +28,7 @@ export class CompressText extends Group {
       fontWeight: 'normal',
       lineHeight: this.baseLineHeight,
       letterSpacing: 0,
+      wordSpacing: 0,
       firstLineCompress: false,
       textAlign: 'justify',
       color: 'black',
@@ -43,13 +45,13 @@ export class CompressText extends Group {
       rtColor: 'black',
       rtStrokeWidth: 0,
       rtFontScaleX: 1,
+      fontScale: 1,
+      autoSmallSize: false,
+      smallFontSize: 18,
       width: 0,
       height: 0,
       x: 0,
       y: 0,
-      fontScale: 1,
-      autoSmallSize: false,
-      smallFontSize: 18,
       zIndex: 0,
     };
 
@@ -152,6 +154,7 @@ export class CompressText extends Group {
   compressText() {
     this.textScale = 1;
     this.firstLineTextScale = 1;
+    this.isSmallSize = false;
     this.needCompressTwice = false;
     this.parseList = this.getParseList();
     this.newlineList = this.getNewlineList();
@@ -197,6 +200,10 @@ export class CompressText extends Group {
         char.originalHeight = bounds.height;
         char.width = bounds.width;
         char.height = bounds.height;
+        if (char.text === ' ') {
+          char.originalWidth += this.wordSpacing;
+          char.width += this.wordSpacing;
+        }
         this.tempGroup.add(charLeaf);
       });
     });
@@ -236,8 +243,12 @@ export class CompressText extends Group {
           if (this.autoSmallSize && scale < 0.7 && this.fontScale <= 1 && !this.isSmallSize) {
             this.isSmallSize = true;
             this.updateFontSize();
+            scale = 0.5;
+            start = 0;
+            end = 1;
+          } else {
+            break;
           }
-          break;
         }
       }
     }
