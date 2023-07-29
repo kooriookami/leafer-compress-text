@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import FontFaceObserver from 'fontfaceobserver';
 import { Group, Text } from 'leafer-ui';
 import { splitBreakWord } from './split-break-word.js';
@@ -52,7 +53,8 @@ export class CompressText extends Group {
     this.compressText();
   }
 
-  set(data) {
+  set(data = {}) {
+    data = _.cloneDeep(data);
     let needLoadFont = false;
     let needCompressText = false;
     Object.keys(data).forEach(key => {
