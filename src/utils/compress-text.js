@@ -343,6 +343,7 @@ export class CompressText extends Group {
             charLeaf.scaleX = this.firstLineTextScale;
             char.width = char.originalWidth * this.firstLineTextScale;
           } else if (!this.noCompressText.includes(char.text) && lastNewline) {
+            // 只压缩最后一行
             charLeaf.scaleX = this.textScale;
             char.width = char.originalWidth * this.textScale;
           }
@@ -351,7 +352,7 @@ export class CompressText extends Group {
             noBreakTotalWidth += char.width + paddingLeft + paddingRight;
           } else {
             const totalWidth = char.width + paddingLeft + paddingRight;
-            if (this.width && totalWidth < this.width && this.currentX + totalWidth > this.width) {
+            if (this.width && char.text !== '\n' && this.currentX && this.currentX + totalWidth > this.width) {
               this.addRow();
             }
             this.positionChar(char);
@@ -362,7 +363,7 @@ export class CompressText extends Group {
         });
 
         if (noBreakCharList.length) {
-          if (this.width && noBreakTotalWidth < this.width && this.currentX + noBreakTotalWidth > this.width) {
+          if (this.width && this.currentX + noBreakTotalWidth > this.width) {
             this.addRow();
           }
           noBreakCharList.forEach(char => {
