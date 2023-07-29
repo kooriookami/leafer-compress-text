@@ -20,37 +20,42 @@ export class CompressText extends Group {
     this.needCompressTwice = false; // 是否需要二次压缩
     this.bounds = {}; // 宽高信息
 
-    this.text = data.text ?? '';
-    this.fontFamily = data.fontFamily ?? 'ygo-sc, 楷体, serif';
-    this.fontSize = data.fontSize ?? 24;
-    this.fontWeight = data.fontWeight ?? 'normal';
-    this.lineHeight = data.lineHeight ?? this.baseLineHeight;
-    this.letterSpacing = data.letterSpacing ?? 0;
-    this.firstLineCompress = data.firstLineCompress;
-    this.textAlign = data.textAlign ?? 'justify';
-    this.color = data.color ?? 'black';
-    this.strokeWidth = data.strokeWidth ?? 0;
-    this.gradient = data.gradient;
-    this.gradientColor1 = data.gradientColor1 || '#999999';
-    this.gradientColor2 = data.gradientColor2 || '#ffffff';
-    this.rtFontFamily = data.rtFontFamily ?? 'ygo-tip, sans-serif';
-    this.rtFontSize = data.rtFontSize ?? 13;
-    this.rtFontWeight = data.rtFontWeight ?? 'bold';
-    this.rtLineHeight = data.rtLineHeight ?? this.baseLineHeight;
-    this.rtLetterSpacing = data.rtLetterSpacing ?? 0;
-    this.rtTop = data.rtTop ?? -9;
-    this.rtColor = data.rtColor ?? 'black';
-    this.rtStrokeWidth = data.rtStrokeWidth ?? 0;
-    this.rtFontScaleX = data.rtFontScaleX ?? 1;
-    this.width = data.width ?? 0;
-    this.height = data.height ?? 0;
-    this.x = data.x ?? 0;
-    this.y = data.y ?? 0;
-    this.fontScale = data.fontScale ?? 1;
-    this.autoSmallSize = data.autoSmallSize;
-    this.smallFontSize = data.smallFontSize ?? this.fontSize;
-    this.zIndex = data.zIndex ?? 0;
+    this.defaultData = {
+      text: '',
+      fontFamily: 'ygo-sc, 楷体, serif',
+      fontSize: 24,
+      fontWeight: 'normal',
+      lineHeight: this.baseLineHeight,
+      letterSpacing: 0,
+      firstLineCompress: false,
+      textAlign: 'justify',
+      color: 'black',
+      strokeWidth: 0,
+      gradient: false,
+      gradientColor1: '#999999',
+      gradientColor2: '#ffffff',
+      rtFontFamily: 'ygo-tip, sans-serif',
+      rtFontSize: 13,
+      rtFontWeight: 'bold',
+      rtLineHeight: this.baseLineHeight,
+      rtLetterSpacing: 0,
+      rtTop: -9,
+      rtColor: 'black',
+      rtStrokeWidth: 0,
+      rtFontScaleX: 1,
+      width: 0,
+      height: 0,
+      x: 0,
+      y: 0,
+      fontScale: 1,
+      autoSmallSize: false,
+      smallFontSize: 18,
+      zIndex: 0,
+    };
 
+    Object.keys(this.defaultData).forEach(key => {
+      this[key] = data[key] ?? this.defaultData[key];
+    });
     this.loadFont();
     this.compressText();
   }
@@ -60,9 +65,9 @@ export class CompressText extends Group {
     let needLoadFont = false;
     let needCompressText = false;
     Object.keys(data).forEach(key => {
-      const value = data[key];
-      if (value !== null && value !== undefined && JSON.stringify(this[key]) !== JSON.stringify(value)) {
-        this[key] = data[key];
+      const value = data[key] ?? this.defaultData[key];
+      if (JSON.stringify(this[key]) !== JSON.stringify(value)) {
+        this[key] = value;
         if (['fontFamily', 'rtFontFamily'].includes(key)) {
           needLoadFont = true;
         }
