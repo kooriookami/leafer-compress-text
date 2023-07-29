@@ -18,7 +18,7 @@ export class CompressText extends Group {
     this.group = null; // Leafer文本组
     this.tempGroup = null; // 临时组
     this.needCompressTwice = false; // 是否需要二次压缩
-    this.bounds = {}; // 宽高信息，优化性能，避免使用group的worldBoxBounds
+    this.bounds = {}; // 宽高信息
 
     this.text = data.text ?? '';
     this.fontFamily = data.fontFamily ?? 'ygo-sc, 楷体, serif';
@@ -501,8 +501,8 @@ export class CompressText extends Group {
         const lastChar = lineList[lineList.length - 1];
         const lastCharLeaf = lastChar.charLeaf;
         const lastPaddingRight = lastChar.paddingRight || 0;
-        this.bounds.width = Math.max(this.bounds.width, lastCharLeaf.x + lastChar.width + lastPaddingRight);
-        this.bounds.height = Math.max(this.bounds.height, lastCharLeaf.y + lastChar.height);
+        this.bounds.width = Math.max(this.bounds.width, lastCharLeaf.x + lastChar.width + lastPaddingRight) * this.scaleX;
+        this.bounds.height = Math.max(this.bounds.height, lastCharLeaf.y + lastChar.height) * this.scaleY;
       }
     }
   }
