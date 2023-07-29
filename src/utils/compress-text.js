@@ -18,6 +18,7 @@ export class CompressText extends Group {
     this.group = null; // Leafer文本组
     this.tempGroup = null; // 临时组
     this.needCompressTwice = false; // 是否需要二次压缩
+    this.bounds = {}; // 宽高信息，优化性能，避免使用group的worldBoxBounds
 
     this.text = data.text ?? '';
     this.fontFamily = data.fontFamily ?? 'ygo-sc, 楷体, serif';
@@ -161,6 +162,7 @@ export class CompressText extends Group {
     this.alignRuby();
     this.createRt();
     this.createGradient();
+    this.createBounds();
     this.group.add(this.tempGroup);
   }
 
@@ -483,6 +485,25 @@ export class CompressText extends Group {
           });
         });
       });
+    }
+  }
+
+  // 创建元素信息
+  createBounds() {
+    this.bounds = {
+      width: 0,
+      height: 0,
+    };
+    const charList = this.parseList.map(item => item.ruby.charList).flat();
+    for (let line = 0; line < this.currentLine + 1; line++) {
+      const lineList = charList.filter(item => item.line === line);
+      if (lineList.length) {
+        const lastChar = lineList[lineList.length - 1];
+        const lastCharLeaf = lastChar.charLeaf;
+        const lastPaddingRight = lastChar.paddingRight || 0;
+        this.bounds.width = Math.max(this.bounds.width, lastCharLeaf.x + lastChar.width + lastPaddingRight);
+        this.bounds.height = Math.max(this.bounds.height, lastCharLeaf.y + lastChar.height);
+      }
     }
   }
 }
