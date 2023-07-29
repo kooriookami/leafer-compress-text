@@ -56,7 +56,7 @@ export class CompressText extends Group {
     let needLoadFont = false;
     let needCompressText = false;
     Object.keys(data).forEach(key => {
-      if (this[key] !== data[key]) {
+      if (JSON.stringify(this[key]) !== JSON.stringify(data[key])) {
         this[key] = data[key];
         if (['fontFamily', 'rtFontFamily'].includes(key)) {
           needLoadFont = true;
