@@ -53,6 +53,7 @@ export class CompressText extends Group {
       zIndex: 0,
     };
 
+    data = _.cloneDeep(data);
     Object.keys(this.defaultData).forEach(key => {
       this[key] = data[key] ?? this.defaultData[key];
     });
