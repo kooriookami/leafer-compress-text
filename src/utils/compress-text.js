@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import cloneDeep from 'lodash/cloneDeep';
 import { Group, Text } from 'leafer-ui';
 import { splitBreakWord } from './split-break-word.js';
 
@@ -60,7 +60,7 @@ export class CompressText extends Group {
   }
 
   set(data = {}) {
-    data = _.cloneDeep(data);
+    data = cloneDeep(data);
     let needLoadFont = false;
     let needCompressText = false;
     Object.keys(data).forEach(key => {
@@ -82,7 +82,7 @@ export class CompressText extends Group {
   }
 
   initData(data = {}) {
-    data = _.cloneDeep(data);
+    data = cloneDeep(data);
     Object.keys(this.defaultData).forEach(key => {
       this[key] = data[key] ?? this.defaultData[key];
     });

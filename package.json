@@ -1,11 +1,14 @@
 {
-  "name": "compress-text",
-  "private": true,
-  "version": "0.0.0",
+  "name": "leafer-compress-text",
+  "version": "1.0.2",
+  "main": "umd/index.js",
+  "module": "es/index.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:lib": "vite build -- lib",
     "preview": "vite preview",
+    "publish": "npm publish dist/ --registry https://registry.npmjs.org",
     "lint": "eslint ./src --ext .vue,.js,.ts,.jsx,.tsx",
     "lint-fix": "eslint --fix ./src --ext .vue,.js,.ts,.jsx,.tsx"
   },
@@ -23,6 +26,7 @@
     "eslint": "^8.46.0",
     "eslint-define-config": "^1.22.0",
     "eslint-plugin-vue": "^9.16.0",
+    "rollup-plugin-copy": "^3.4.0",
     "sass": "^1.64.1",
     "vite": "^4.4.7"
   }
