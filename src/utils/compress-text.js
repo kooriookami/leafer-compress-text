@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import FontFaceObserver from 'fontfaceobserver';
 import { Group, Text } from 'leafer-ui';
 import { splitBreakWord } from './split-break-word.js';
 
@@ -55,10 +54,7 @@ export class CompressText extends Group {
       zIndex: 0,
     };
 
-    data = _.cloneDeep(data);
-    Object.keys(this.defaultData).forEach(key => {
-      this[key] = data[key] ?? this.defaultData[key];
-    });
+    this.initData(data);
     this.loadFont();
     this.compressText();
   }
@@ -85,21 +81,16 @@ export class CompressText extends Group {
     }
   }
 
-  loadFont() {
-    const fontSet = new Set();
-    this.fontFamily.split(',').forEach(value => {
-      fontSet.add(value.trim());
+  initData(data = {}) {
+    data = _.cloneDeep(data);
+    Object.keys(this.defaultData).forEach(key => {
+      this[key] = data[key] ?? this.defaultData[key];
     });
-    this.rtFontFamily.split(',').forEach(value => {
-      fontSet.add(value.trim());
-    });
+  }
 
-    fontSet.forEach(font => {
-      const fontObserver = new FontFaceObserver(font);
-      fontObserver.load().then(() => {
-        this.compressText();
-      }).catch(() => {
-      });
+  loadFont() {
+    document.fonts.ready.finally(() => {
+      this.compressText();
     });
   }
 
