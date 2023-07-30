@@ -55,8 +55,8 @@ export class CompressText extends Group {
     };
 
     this.initData(data);
-    this.loadFont();
     this.compressText();
+    this.loadFont();
   }
 
   set(data = {}) {
