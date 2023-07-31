@@ -1,6 +1,6 @@
 {
   "name": "leafer-compress-text",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "main": "umd/index.js",
   "module": "es/index.js",
   "scripts": {
@@ -12,6 +12,19 @@
     "lint": "eslint ./src --ext .vue,.js,.ts,.jsx,.tsx",
     "lint-fix": "eslint --fix ./src --ext .vue,.js,.ts,.jsx,.tsx"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kooriookami/leafer-compress-text"
+  },
+  "keywords": [
+    "leaferui",
+    "leafer-ui",
+    "leaferjs",
+    "leafer",
+    "leafer-compress-text"
+  ],
+  "author": "kooriookami",
+  "license": "ISC",
   "dependencies": {
     "@element-plus/icons-vue": "^2.1.0",
     "element-plus": "^2.3.8",

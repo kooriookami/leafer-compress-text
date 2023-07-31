@@ -7,7 +7,7 @@
 [在线演示](https://kooriookami.github.io/compress-text/)
 
 ## 流程图
-![process](./process.png)
+![process](https://github.com/kooriookami/leafer-compress-text/raw/master/process.png)
 
 ## 使用说明
 

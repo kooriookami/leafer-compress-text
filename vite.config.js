@@ -24,7 +24,6 @@ const buildLib = {
           { src: 'LICENSE', dest: 'dist' },
           { src: 'README.md', dest: 'dist' },
           { src: 'package.json', dest: 'dist' },
-          { src: 'process.png', dest: 'dist' },
         ],
         hook: 'writeBundle',
       }),
