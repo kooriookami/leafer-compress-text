@@ -4,7 +4,7 @@
 
 ## 在线演示
 
-[在线演示](https://kooriookami.github.io/compress-text/)
+[在线演示](https://kooriookami.github.io/leafer-compress-text/)
 
 ## 流程图
 ![process](https://github.com/kooriookami/leafer-compress-text/raw/master/process.png)

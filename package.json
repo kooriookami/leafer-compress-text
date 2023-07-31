@@ -1,6 +1,6 @@
 {
   "name": "leafer-compress-text",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "main": "umd/index.js",
   "module": "es/index.js",
   "scripts": {
