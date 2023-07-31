@@ -17,7 +17,7 @@
   import { Leafer } from 'leafer-ui';
   import { CompressText } from 'leafer-compress-text';
 
-  leafer = new Leafer({
+  const leafer = new Leafer({
     ... // 参数见 https://leaferjs.com/
   });
 
