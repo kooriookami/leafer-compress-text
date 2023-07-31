@@ -118,7 +118,7 @@
 
 <script>
   import { Leafer } from 'leafer-ui';
-  import { CompressText } from '@/utils/compress-text';
+  import { CompressText } from '@/compress-text';
   import { Icon } from '@iconify/vue';
 
   let compressText = null;

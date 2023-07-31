@@ -18,11 +18,11 @@
   import { CompressText } from 'leafer-compress-text';
 
   leafer = new Leafer({
-    ...
+    ... // 参数见 https://leaferjs.com/
   });
 
   const compressText = new CompressText({
-    ...
+    ... // 参数见 src/compress-text/compress-text.js => this.defaultData
   });
   leafer.add(compressText);
 ```

@@ -5,7 +5,7 @@ import path from 'path';
 
 const buildLib = {
   lib: {
-    entry: path.resolve(__dirname, 'src/utils/compress-text.js'),
+    entry: path.resolve(__dirname, 'src/compress-text/index.js'),
     name: 'LeaferCompressText',
     fileName: format => `${format}/index.js`,
   },
@@ -23,7 +23,6 @@ const buildLib = {
         targets: [
           { src: 'LICENSE', dest: 'dist' },
           { src: 'README.md', dest: 'dist' },
-          { src: 'package.json', dest: 'dist' },
           { src: 'package.json', dest: 'dist' },
           { src: 'process.png', dest: 'dist' },
         ],
