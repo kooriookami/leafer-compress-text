@@ -1,13 +1,35 @@
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import copy from 'rollup-plugin-copy';
+import jsonfile from 'jsonfile';
 import path from 'path';
+
+function editPackageJson() {
+  return {
+    name: 'edit-package-json',
+    closeBundle() {
+      const file = 'dist/package.json';
+      jsonfile.readFile(file, (err, obj) => {
+        if (!err) {
+          obj.main = 'umd/index.js';
+          obj.module = 'es/index.mjs';
+          jsonfile.writeFile(file, obj, { spaces: 2, EOL: '\r\n' });
+        }
+      });
+    },
+  };
+}
 
 const buildLib = {
   lib: {
-    entry: path.resolve(__dirname, 'src/compress-text/index.js'),
+    entry: path.resolve(__dirname, 'packages/compress-text'),
     name: 'LeaferCompressText',
-    fileName: format => `${format}/index.js`,
+    fileName: format => {
+      if (format === 'es') {
+        return `${format}/index.mjs`;
+      }
+      return `${format}/index.js`;
+    },
   },
   rollupOptions: {
     // 确保外部化处理那些你不想打包进库的依赖
@@ -21,12 +43,13 @@ const buildLib = {
     plugins: [
       copy({
         targets: [
-          { src: 'LICENSE', dest: 'dist' },
-          { src: 'README.md', dest: 'dist' },
-          { src: 'package.json', dest: 'dist' },
+          { src: 'packages/compress-text/LICENSE', dest: 'dist' },
+          { src: 'packages/compress-text/README.md', dest: 'dist' },
+          { src: 'packages/compress-text/package.json', dest: 'dist' },
         ],
         hook: 'writeBundle',
       }),
+      editPackageJson(),
     ],
   },
 };

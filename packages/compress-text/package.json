@@ -1,0 +1,23 @@
+{
+  "name": "leafer-compress-text",
+  "version": "1.0.7",
+  "main": "src/index.js",
+  "module": "src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kooriookami/leafer-compress-text"
+  },
+  "keywords": [
+    "leafer-compress-text",
+    "leaferui",
+    "leafer-ui",
+    "leaferjs",
+    "leafer"
+  ],
+  "author": "kooriookami",
+  "license": "ISC",
+  "dependencies": {
+    "leafer-ui": "^1.0.0-beta.7",
+    "lodash": "^4.17.21"
+  }
+}
