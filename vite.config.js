@@ -43,8 +43,8 @@ const buildLib = {
     plugins: [
       copy({
         targets: [
-          { src: 'packages/compress-text/LICENSE', dest: 'dist' },
-          { src: 'packages/compress-text/README.md', dest: 'dist' },
+          { src: 'LICENSE', dest: 'dist' },
+          { src: 'README.md', dest: 'dist' },
           { src: 'packages/compress-text/package.json', dest: 'dist' },
         ],
         hook: 'writeBundle',
