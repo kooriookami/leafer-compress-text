@@ -63,8 +63,8 @@ export class CompressText extends Group {
 
   set(data = {}) {
     data = cloneDeep(data);
-    let needLoadFont = false;
     let needCompressText = false;
+    let needLoadFont = false;
     Object.keys(data).forEach(key => {
       const value = data[key] ?? this.defaultData[key];
       if (JSON.stringify(this[key]) !== JSON.stringify(value)) {
@@ -75,11 +75,12 @@ export class CompressText extends Group {
         needCompressText = true;
       }
     });
-    if (needLoadFont) {
-      this.loadFont();
-    }
     if (needCompressText) {
       this.compressText();
+    }
+    // 先触发绘制，再触发字体加载
+    if (needLoadFont) {
+      this.loadFont();
     }
   }
 
