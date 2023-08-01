@@ -48,6 +48,7 @@ export class CompressText extends Group {
       fontScale: 1,
       autoSmallSize: false,
       smallFontSize: 18,
+      key: 0,
       width: 0,
       height: 0,
       x: 0,
@@ -68,7 +69,7 @@ export class CompressText extends Group {
       const value = data[key] ?? this.defaultData[key];
       if (JSON.stringify(this[key]) !== JSON.stringify(value)) {
         this[key] = value;
-        if (['fontFamily', 'rtFontFamily'].includes(key)) {
+        if (['fontFamily', 'rtFontFamily', 'key'].includes(key)) {
           needLoadFont = true;
         }
         needCompressText = true;
