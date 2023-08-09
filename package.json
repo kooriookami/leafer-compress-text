@@ -30,6 +30,7 @@
   "license": "ISC",
   "dependencies": {
     "@element-plus/icons-vue": "^2.1.0",
+    "css-line-break": "^2.1.0",
     "element-plus": "^2.3.9",
     "leafer-compress-text": "workspace:*",
     "leafer-ui": "^1.0.0-beta.9",
