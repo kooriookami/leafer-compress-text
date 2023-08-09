@@ -413,10 +413,29 @@ export class CompressText extends Group {
 
   // 添加行
   addRow() {
+    this.removeLineLastSpace(this.currentLine);
     const fontSize = this.isSmallSize ? this.smallFontSize : this.fontSize;
     this.currentX = 0;
     this.currentY += fontSize * this.lineHeight * this.fontScale;
     this.currentLine++;
+  }
+
+  // 删除行尾空格
+  removeLineLastSpace(line) {
+    const charList = this.parseList.map(item => item.ruby.charList).flat();
+    const lineList = charList.filter(item => item.line === line);
+    if (lineList.length) {
+      const lastChar = lineList[lineList.length - 1];
+      if (lastChar.text === ' ') {
+        const lastCharLeaf = lastChar.charLeaf;
+        const lastPaddingLeft = lastChar.paddingLeft || 0;
+        const lastPaddingRight = lastChar.paddingRight || 0;
+        this.currentX -= lastChar.width + lastPaddingLeft + lastPaddingRight;
+        lastCharLeaf.remove();
+        lastChar.line = -1;
+        this.removeLineLastSpace(line);
+      }
+    }
   }
 
   // 定位rt
