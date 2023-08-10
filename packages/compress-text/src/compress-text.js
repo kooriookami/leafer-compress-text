@@ -101,7 +101,7 @@ export class CompressText extends Group {
   getParseList() {
     let bold = false;
     // 正则的捕获圆括号不要随意修改
-    return String(this.text).trimEnd().split(/(\[.*?\(.*?\)]|<b>|<\/b>|\n)/).filter(value => value).map(value => {
+    return String(this.text).trimEnd().split(new RegExp(`(\\[.*?\\(.*?\\)]|<b>|</b>|\n|[${this.noCompressText}])`)).filter(value => value).map(value => {
       let rubyText = value;
       let rtText = '';
       if (/\[.*?\(.*?\)]/g.test(value)) {
