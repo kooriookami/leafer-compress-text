@@ -57,8 +57,6 @@ export class CompressText extends Group {
     };
 
     this.initData(data);
-    this.compressText();
-    this.loadFont();
   }
 
   set(data = {}) {
@@ -85,10 +83,7 @@ export class CompressText extends Group {
   }
 
   initData(data = {}) {
-    data = cloneDeep(data);
-    Object.keys(this.defaultData).forEach(key => {
-      this[key] = data[key] ?? this.defaultData[key];
-    });
+    this.set(Object.assign(this.defaultData, data));
   }
 
   loadFont() {
