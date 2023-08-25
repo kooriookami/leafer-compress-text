@@ -23,23 +23,23 @@
       <div class="form-main">
         <p v-if="form.firstLineCompress">首行文本压缩率：{{ firstLineTextScale }}</p>
         <p>当前文本压缩率：{{ textScale }}</p>
-        <el-form-item label="宽度">
-          <el-input-number
-            v-model="form.width"
-            :min="0"
-            :max="2000"
-            :precision="0"
-          />
-        </el-form-item>
-        <el-form-item label="高度">
-          <el-input-number
-            v-model="form.height"
-            :min="0"
-            :max="2000"
-            :precision="0"
-          />
-        </el-form-item>
         <el-form :model="form" label-width="auto">
+          <el-form-item label="宽度">
+            <el-input-number
+              v-model="form.width"
+              :min="0"
+              :max="2000"
+              :precision="0"
+            />
+          </el-form-item>
+          <el-form-item label="高度">
+            <el-input-number
+              v-model="form.height"
+              :min="0"
+              :max="2000"
+              :precision="0"
+            />
+          </el-form-item>
           <el-form-item label="文本">
             <el-switch v-model="form.firstLineCompress" active-text="首行压缩" />
             <el-input
@@ -50,67 +50,70 @@
               placeholder="请输入文本"
             />
           </el-form-item>
+          <el-form-item label="颜色">
+            <el-switch v-model="form.gradient" active-text="渐变色" />
+            <div v-if="form.gradient" style="width: 100%; margin-top: 10px">
+              <el-row :gutter="gutter">
+                <el-col :span="8">
+                  <el-space :size="10" wrap>
+                    <el-color-picker v-model="form.gradientColor1" @change="changeGradientColor" />
+                    <el-color-picker v-model="form.gradientColor2" @change="changeGradientColor" />
+                  </el-space>
+                </el-col>
+                <el-col :span="16">
+                  <el-form-item style="margin-bottom: 0" label="预设">
+                    <el-select
+                      v-model="form.gradientPreset"
+                      placeholder="请选择预设"
+                      clearable
+                      @change="changeGradientPreset"
+                    >
+                      <el-option v-for="item in gradientList" :label="item.label" :value="item.value" />
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </div>
+            <div v-else style="width: 100%;margin-top: 10px">
+              <el-color-picker v-model="form.color" />
+            </div>
+          </el-form-item>
+          <el-form-item label="对齐">
+            <el-radio-group v-model="form.textAlign">
+              <el-radio-button label="left">
+                左
+              </el-radio-button>
+              <el-radio-button label="center">
+                中
+              </el-radio-button>
+              <el-radio-button label="right">
+                右
+              </el-radio-button>
+              <el-radio-button label="justify">
+                两端
+              </el-radio-button>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item label="描边">
+            <el-slider
+              v-model="form.strokeWidth"
+              :min="0"
+              :max="1"
+              :step="0.1"
+            />
+          </el-form-item>
+          <el-form-item label="缩放">
+            <el-slider
+              v-model="form.fontScale"
+              :min="0.5"
+              :max="1.5"
+              :step="0.02"
+            />
+          </el-form-item>
+          <el-form-item label="显示">
+            <el-switch v-model="form.visible" />
+          </el-form-item>
         </el-form>
-        <el-form-item label="颜色">
-          <el-switch v-model="form.gradient" active-text="渐变色" />
-          <div v-if="form.gradient" style="width: 100%; margin-top: 10px">
-            <el-row :gutter="gutter">
-              <el-col :span="8">
-                <el-space :size="10" wrap>
-                  <el-color-picker v-model="form.gradientColor1" @change="changeGradientColor" />
-                  <el-color-picker v-model="form.gradientColor2" @change="changeGradientColor" />
-                </el-space>
-              </el-col>
-              <el-col :span="16">
-                <el-form-item style="margin-bottom: 0" label="预设">
-                  <el-select
-                    v-model="form.gradientPreset"
-                    placeholder="请选择预设"
-                    clearable
-                    @change="changeGradientPreset"
-                  >
-                    <el-option v-for="item in gradientList" :label="item.label" :value="item.value" />
-                  </el-select>
-                </el-form-item>
-              </el-col>
-            </el-row>
-          </div>
-          <div v-else style="width: 100%;margin-top: 10px">
-            <el-color-picker v-model="form.color" />
-          </div>
-        </el-form-item>
-        <el-form-item label="对齐">
-          <el-radio-group v-model="form.textAlign">
-            <el-radio-button label="left">
-              左
-            </el-radio-button>
-            <el-radio-button label="center">
-              中
-            </el-radio-button>
-            <el-radio-button label="right">
-              右
-            </el-radio-button>
-            <el-radio-button label="justify">
-              两端
-            </el-radio-button>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="描边">
-          <el-slider
-            v-model="form.strokeWidth"
-            :min="0"
-            :max="1"
-            :step="0.1"
-          />
-        </el-form-item>
-        <el-form-item label="缩放">
-          <el-slider
-            v-model="form.fontScale"
-            :min="0.5"
-            :max="1.5"
-            :step="0.02"
-          />
-        </el-form-item>
       </div>
     </div>
   </div>
@@ -150,6 +153,7 @@
           gradientPreset: 'silver',
           strokeWidth: 0,
           fontScale: 1,
+          visible: true,
         },
         gradientList: [
           { label: '银字', value: 'silver', color1: '#999999', color2: '#ffffff' },
@@ -204,8 +208,9 @@
           gradientColor2: this.form.gradientColor2,
           strokeWidth: this.form.strokeWidth,
           fontScale: this.form.fontScale,
-          // autoSmallSize: true,
-          // smallFontSize: 18,
+          visible: this.form.visible,
+        // autoSmallSize: true,
+        // smallFontSize: 18,
         });
 
         this.firstLineTextScale = compressText.firstLineTextScale;
@@ -237,68 +242,68 @@
 </script>
 
 <style lang="scss" scoped>
-  .compress-text-container {
-    height: 100vh;
-    display: flex;
-    overflow: hidden;
+.compress-text-container {
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
 
-    .compress-text {
-      height: 100%;
-      overflow: auto;
-      flex-grow: 1;
-      position: relative;
-      padding: 20px;
+  .compress-text {
+    height: 100%;
+    overflow: auto;
+    flex-grow: 1;
+    position: relative;
+    padding: 20px;
 
-      .leafer {
-        display: inline-flex;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+    .leafer {
+      display: inline-flex;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+    }
+  }
+
+  .form {
+    height: 100%;
+    overflow: auto;
+    width: 400px;
+    flex-shrink: 0;
+    border-left: 1px solid var(--border-color);
+
+    .form-header {
+      padding: 30px 20px;
+      font-size: 18px;
+      font-weight: bold;
+      border-bottom: 1px solid var(--border-color);
+
+      .form-title {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+
+        .github-icon {
+          margin-left: 5px;
+          cursor: pointer;
+        }
+      }
+
+      .form-description {
+        margin-top: 20px;
+        font-size: 12px;
+        font-weight: normal;
+        color: var(--info-color);
       }
     }
 
-    .form {
-      height: 100%;
-      overflow: auto;
-      width: 400px;
-      flex-shrink: 0;
-      border-left: 1px solid var(--border-color);
+    .form-main {
+      padding: 20px;
 
-      .form-header {
-        padding: 30px 20px;
-        font-size: 18px;
-        font-weight: bold;
-        border-bottom: 1px solid var(--border-color);
-
-        .form-title {
-          display: flex;
-          flex-wrap: wrap;
-          align-items: center;
-
-          .github-icon {
-            margin-left: 5px;
-            cursor: pointer;
-          }
-        }
-
-        .form-description {
-          margin-top: 20px;
-          font-size: 12px;
-          font-weight: normal;
-          color: var(--info-color);
-        }
-      }
-
-      .form-main {
-        padding: 20px;
-
-        ::v-deep(.el-form) {
-          .el-form-item {
-            .tip {
-              margin-left: 10px;
-              color: var(--normal-color);
-            }
+      ::v-deep(.el-form) {
+        .el-form-item {
+          .tip {
+            margin-left: 10px;
+            color: var(--normal-color);
           }
         }
       }
     }
   }
+}
 </style>
