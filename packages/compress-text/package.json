@@ -1,6 +1,6 @@
 {
   "name": "leafer-compress-text",
-  "version": "1.0.18",
+  "version": "1.0.19",
   "main": "src/index.js",
   "module": "src/index.js",
   "repository": {
