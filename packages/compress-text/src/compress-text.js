@@ -509,9 +509,9 @@ export class CompressText extends Group {
             strokeWidth: fontSize * 0.025 * this.fontScale,
             strokeAlign: 'outside',
             shadow: {
-              blur: fontSize * 0.025 * this.fontScale,
-              x: fontSize * 0.025 * this.fontScale,
-              y: fontSize * 0.045 * this.fontScale,
+              blur: fontSize * 0.015 * this.fontScale,
+              x: 0,
+              y: fontSize * 0.025 * this.fontScale,
               color: 'rgba(0, 0, 0, 0.6)',
             },
           });
