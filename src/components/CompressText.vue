@@ -80,16 +80,16 @@
           </el-form-item>
           <el-form-item label="对齐">
             <el-radio-group v-model="form.textAlign">
-              <el-radio-button label="left">
+              <el-radio-button value="left">
                 左
               </el-radio-button>
-              <el-radio-button label="center">
+              <el-radio-button value="center">
                 中
               </el-radio-button>
-              <el-radio-button label="right">
+              <el-radio-button value="right">
                 右
               </el-radio-button>
-              <el-radio-button label="justify">
+              <el-radio-button value="justify">
                 两端
               </el-radio-button>
             </el-radio-group>

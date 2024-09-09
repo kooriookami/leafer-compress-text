@@ -16,7 +16,6 @@ export class CompressText extends Group {
     this.firstLineTextScale = 1; // 首行文本缩放比例
     this.isSmallSize = false; // 是否是小文字
     this.group = null; // Leafer文本组
-    this.tempGroup = null; // 临时组
     this.needCompressTwice = false; // 是否需要二次压缩
     this.bounds = {}; // 宽高信息
 
@@ -147,22 +146,17 @@ export class CompressText extends Group {
     this.needCompressTwice = false;
     this.parseList = this.getParseList();
     this.newlineList = this.getNewlineList();
-    if (!this.group) {
-      this.group = new Group();
-      this.add(this.group);
+    if (this.group) {
+      this.group.destroy();
     }
-    this.group.removeAll();
-    this.tempGroup = new Group({
-      x: 0,
-      y: 0,
-    });
+    this.group = new Group();
     this.createRuby();
     this.compressRuby();
     this.alignRuby();
     this.createRt();
     this.createGradient();
     this.createBounds();
-    this.group.add(this.tempGroup);
+    this.add(this.group);
   }
 
   // 创建文本
@@ -193,7 +187,7 @@ export class CompressText extends Group {
           char.originalWidth += this.wordSpacing;
           char.width += this.wordSpacing;
         }
-        this.tempGroup.add(charLeaf);
+        this.group.add(charLeaf);
       });
     });
     this.updateTextScale();
@@ -305,7 +299,7 @@ export class CompressText extends Group {
         rt.width = bounds.width;
         rt.height = bounds.height;
         this.positionRt(item);
-        this.tempGroup.add(rtLeaf);
+        this.group.add(rtLeaf);
       }
     });
     // 如果需要再次压缩
@@ -426,7 +420,7 @@ export class CompressText extends Group {
         const lastPaddingLeft = lastChar.paddingLeft || 0;
         const lastPaddingRight = lastChar.paddingRight || 0;
         this.currentX -= lastChar.width + lastPaddingLeft + lastPaddingRight;
-        lastCharLeaf.remove();
+        lastCharLeaf.destroy();
         lastChar.line = -1;
         this.removeLineLastSpace(line);
       }
@@ -447,7 +441,7 @@ export class CompressText extends Group {
       const lastPaddingRight = lastChar.paddingRight || 0;
       const rubyWidth = lastCharLeaf.x - firstCharLeaf.x + lastChar.width + firstPaddingLeft + lastPaddingRight;
 
-      rtLeaf.around = { x: 0.5, y: 0 };
+      rtLeaf.around = { type: 'percent', x: 0.5, y: 0 };
       rtLeaf.x = firstCharLeaf.x + rubyWidth / 2 - firstPaddingLeft;
       rtLeaf.y = firstCharLeaf.y + this.rtTop * this.fontScale;
 
